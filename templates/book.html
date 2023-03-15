@@ -1,0 +1,34 @@
+{% extends "parent.html" %}
+{% block content %}
+<div class = 'add'>
+    <a href = "{{url_for('add')}}"><img src="{{url_for('static', filename = 'book.jpg')}}"></a><br>
+    <h2>Dodaj pozycję</h2>
+</div>
+    {% for instance in book %}
+    <table class = "basic_table">
+        <tr>
+            <td>
+                <img class = 'cover', src ='/static/covers/{{instance.cover}}'>
+            </td>
+            <td>   
+            <div class = description>
+                <p>Tytuł: {{instance.title}}</p>
+                <p>Autor: {{instance.author}}</p>
+                <p>Rok wydania: {{instance.release_year}}</p>
+                <p>Gatunek: {{instance.genre}}</p>
+                <p>Opis książki: {{instance.description}}</p>   
+                {% if instance.readed == True %}
+                    <p>Recenzja: {{instance.reviev}}</p>
+                    <p>Ocena: {{instance.rate}}</p>
+                {% endif %}
+            </div>
+            </td> 
+            <td>
+                <a href = "{{url_for('reviev', book_title = instance.title)}}"><img src="{{url_for('static', filename = 'book1.jpg')}}"></a>
+                <h3>Edytuj pozycję</h3>
+            </td>
+        </tr>
+    </table>
+   
+    {% endfor %}
+{% endblock %}

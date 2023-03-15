@@ -1,0 +1,16 @@
+{% block head %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel = 'stylesheet' href = "{{url_for('static', filename = 'style.css')}}">
+        <title>Biblioteka domowa</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <div class = header>
+            <h1>Domowa biblioteka</h1>
+        </div>
+        {% block content %}{% endblock %}
+    </body>
+</html>
+{% endblock %}

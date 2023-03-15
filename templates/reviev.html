@@ -1,0 +1,25 @@
+{% extends "parent.html" %}
+{% block content %}
+<div >
+    <h1>Edytuj pozycję</h1>
+</div>
+<form method = "POST" action = "{{url_for('reviev', book_title = book_title)}}", enctype="multipart/form-data">
+    <table class = "form_table">   
+        {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+            <tr>   
+            <td>
+            {{ field.label }}
+            </td>
+            <td>
+            {{ field }}
+            </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <input type = "submit", value="Zapisz zmiany"><br>
+    <br>
+    <a href = "{{url_for('home')}}"><img src="{{url_for('static', filename = 'book2.jpg')}}"></a><br>
+    <h2>Wróć do strony głównej</h2>
+</form>
+{% endblock %}
