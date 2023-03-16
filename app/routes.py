@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, redirect
 from app.forms import BookForm
 from app.models import book
-from __init__ import app
+from app import app
 import os
 
 @app.route('/book/')
