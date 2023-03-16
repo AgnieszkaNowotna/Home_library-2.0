@@ -4,7 +4,7 @@
     <a href = "{{url_for('add')}}"><img src="{{url_for('static', filename = 'book.jpg')}}"></a><br>
     <h2>Dodaj pozycję</h2>
 </div>
-    {% for instance in book %}
+    {% for instance in books %}
     <table class = "basic_table">
         <tr>
             <td>
@@ -13,7 +13,7 @@
             <td>   
             <div class = description>
                 <p>Tytuł: {{instance.title}}</p>
-                <p>Autor: {{instance.author}}</p>
+                <p>Autor: {{authors.query.get(instance.author_id).name}} {{authors.query.get(instance.author_id).surname}}</p>
                 <p>Rok wydania: {{instance.release_year}}</p>
                 <p>Gatunek: {{instance.genre}}</p>
                 <p>Opis książki: {{instance.description}}</p>   
