@@ -3,7 +3,7 @@
 <div >
     <h1>Edytuj pozycję</h1>
 </div>
-<form method = "POST" action = "{{url_for('reviev', book_title = book_title)}}", enctype="multipart/form-data">
+<form method = "POST" action = "{{url_for('reviev', book_id = book_id)}}", enctype="multipart/form-data">
     <table class = "form_table">   
         {{ form.hidden_tag() }}
         {% for field in form if field.widget.input_type != 'hidden' %}

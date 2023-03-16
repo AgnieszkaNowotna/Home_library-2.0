@@ -33,27 +33,42 @@ def check_author(data):
     name_surname = data['author'].split(" ")
     author_name = name_surname[0].capitalize()
     author_surname = " ".join(name_surname[1:]).title()
-    new_author = Author.query.filter_by(name = author_name, surname = author_surname).first()
-    if new_author is None:
-        new_author = Author(name = author_name, surname = author_surname)
-        db.session.add(new_author)
+    author = Author.query.filter_by(name = author_name, surname = author_surname).first()
+    if author is None:
+        author = Author(name = author_name, surname = author_surname)
+        db.session.add(author)
         db.session.commit()
-    return new_author
+    return author
 
 def create(data):
     data.pop('csrf_token')
-    new_author = check_author(data)
-    new_book = Books(author_id = new_author.id, 
-                    title = data['title'],
-                    release_year = data['release_year'],
-                    genre = data['genre'],
-                    description = data['description'],
-                    readed = data['readed'],
-                    cover = data['cover'],
-                    reviev = data['reviev'],
-                    score = data['rate'],
-                    )
-    db.session.add(new_book)
+    author = check_author(data)
+    book = Books(author_id = author.id, 
+                title = data['title'],
+                release_year = data['release_year'],
+                genre = data['genre'],
+                description = data['description'],
+                readed = data['readed'],
+                cover = data['cover'],
+                reviev = data['reviev'],
+                score = data['rate'],
+                )
+    db.session.add(book)
+    db.session.commit()
+
+def update(book_id, data):
+    book = Books.query.get(book_id)
+    author = Author.query.get(book.author_id)
+    book.author_id = author.id
+    book.title = data['title']
+    book.release_year = data['release_year']
+    book.genre = data['genre']
+    book.description = data['description']
+    book.readed = data['readed']
+    book.cover = data['cover']
+    book.reviev = data['reviev']
+    book.score = data['rate']
+    db.session.add(book)
     db.session.commit()
 
 def image_to_string(form, data, alternate_cover):
@@ -69,3 +84,17 @@ def image_to_string(form, data, alternate_cover):
     except FileNotFoundError:
         data['cover'] = alternate_cover
         return data
+
+def create_data_to_update(book_id):
+    position = Books.query.get(book_id)
+    author = Author.query.get(position.author_id)
+    author = f'{author.name} {author.surname}'
+    data = {'title':position.title,
+            'author':author,
+            'release_year':position.release_year,
+            'description':position.description,
+            'readed':position.readed,
+            'cover':position.cover,
+            'reviev':position.reviev,
+            'rate':position.score}
+    return data

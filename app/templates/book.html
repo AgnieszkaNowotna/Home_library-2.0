@@ -19,12 +19,13 @@
                 <p>Opis książki: {{instance.description}}</p>   
                 {% if instance.readed == True %}
                     <p>Recenzja: {{instance.reviev}}</p>
-                    <p>Ocena: {{instance.rate}}</p>
+                    <p>Ocena: {{instance.score}}</p>
                 {% endif %}
             </div>
             </td> 
             <td>
-
+                <a href = "{{url_for('reviev', book_id = instance.id)}}"><img src="{{url_for('static', filename = 'book1.jpg')}}"></a>
+                <h3>Edytuj pozycję</h3>
             </td>
         </tr>
     </table>
