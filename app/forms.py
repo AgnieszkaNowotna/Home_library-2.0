@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField,IntegerField, BooleanField, SelectField, SubmitField, FileField
+from wtforms import StringField, TextAreaField,IntegerField, BooleanField, SelectField, FloatField, FileField
 from wtforms.validators import DataRequired, NumberRange, Optional
 import datetime as dt
 
@@ -15,4 +15,4 @@ class BookForm(FlaskForm):
     readed = BooleanField('Czy przeczytana', validators = [Optional()])
     cover = FileField('Okładka książki', validators = [Optional()])
     reviev = TextAreaField('Recenzja', default = "-", validators = [Optional()])
-    rate = IntegerField('Ocena', validators =[Optional(), NumberRange( min = 0, max = 10,)])
+    rate = FloatField('Ocena', validators =[Optional(), NumberRange( min = 0, max = 10,)])

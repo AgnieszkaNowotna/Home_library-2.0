@@ -1,7 +1,7 @@
-from app import db, app
+from app import db
+from config import BASE_DIR
 from werkzeug.utils import secure_filename
 import os
-import json
 
 class Author(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -29,57 +29,43 @@ class Status(db.Model):
     date_of_hire = db.Column(db.Date)
     end_of_handover = db.Column (db.Date)
 
-class Book:
-    def __init__(self):
-        with app.app_context():
-            self.authors = Author.query.all()
-            self.books = Books.query.all()
-            self.statuses = Status.query.all()
-   
-    def all_authors(self):
-        return self.authors
-    
-    def all_books(self):
-        return self.books
-    
-    def all_statuses(self):
-        return self.statuses
-    
-    def get_id(self, title):
-        id = 0
-        for position in self.library:
-            if position['title'] == title:
-                return id
-            else:
-                id +=1
+def check_author(data):
+    name_surname = data['author'].split(" ")
+    author_name = name_surname[0].capitalize()
+    author_surname = " ".join(name_surname[1:]).title()
+    new_author = Author.query.filter_by(name = author_name, surname = author_surname).first()
+    if new_author is None:
+        new_author = Author(name = author_name, surname = author_surname)
+        db.session.add(new_author)
+        db.session.commit()
+    return new_author
 
-    def get(self,id):
-        return self.library[id]
-    
-    def create(self, data):
-        data.pop('csrf_token')
-        self.library.append(data)
+def create(data):
+    data.pop('csrf_token')
+    new_author = check_author(data)
+    new_book = Books(author_id = new_author.id, 
+                    title = data['title'],
+                    release_year = data['release_year'],
+                    genre = data['genre'],
+                    description = data['description'],
+                    readed = data['readed'],
+                    cover = data['cover'],
+                    reviev = data['reviev'],
+                    score = data['rate'],
+                    )
+    db.session.add(new_book)
+    db.session.commit()
 
-    def save_all(self):
-        with open("books.json", "w", encoding="UTF-8")as f:
-            json.dump(self.library, f, ensure_ascii=False)
-
-    def update(self, id, data):
-        data.pop('csrf_token')
-        self.library[id] = data
-        self.save_all()
-
-    def image_to_string(self, form, path, data, alternate_cover):
-        try:
-            f = form.cover.data
-            filename = secure_filename(f.filename)
-            f.save(os.path.join(path, filename))
-            cover = str(data['cover'])
-            replace_name = cover.split(" ")
-            data['cover'] = replace_name[1].replace('"','')
-            return data
-        except FileNotFoundError:
-            data['cover'] = alternate_cover
-            return data
-
-book = Book()
+def image_to_string(form, data, alternate_cover):
+    try:
+        f = form.cover.data
+        filename = secure_filename(f.filename)
+        path = os.path.join(BASE_DIR, 'app\\static\\covers', filename)
+        f.save(path)
+        cover = str(data['cover'])
+        replace_name = cover.split(" ")
+        data['cover'] = replace_name[1].replace("'","")
+        return data
+    except FileNotFoundError:
+        data['cover'] = alternate_cover
+        return data
