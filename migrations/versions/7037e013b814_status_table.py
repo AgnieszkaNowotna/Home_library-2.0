@@ -1,8 +1,8 @@
 """status table
 
-Revision ID: 1ab4fa84ef9b
-Revises: 5834655c9a5c
-Create Date: 2023-03-16 02:01:25.711550
+Revision ID: 7037e013b814
+Revises: 4e965cd181c3
+Create Date: 2023-03-17 11:03:21.262648
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1ab4fa84ef9b'
-down_revision = '5834655c9a5c'
+revision = '7037e013b814'
+down_revision = '4e965cd181c3'
 branch_labels = None
 depends_on = None
 
@@ -23,7 +23,7 @@ def upgrade():
     sa.Column('book_id', sa.Integer(), nullable=True),
     sa.Column('avaliable', sa.Boolean(), nullable=True),
     sa.Column('date_of_hire', sa.Date(), nullable=True),
-    sa.Column('end_of_handover', sa.Date(), nullable=True),
+    sa.Column('date_of_handover', sa.Date(), nullable=True),
     sa.ForeignKeyConstraint(['book_id'], ['books.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

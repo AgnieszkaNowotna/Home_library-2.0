@@ -6,15 +6,32 @@
 <form method = "POST" action= "{{url_for('add')}}", enctype="multipart/form-data">
     <table class = "form_table">
         {{ form.hidden_tag() }}
+        <tr>   
+            <td>
+                <label for="author">Autorzy</label>
+            </td>
+            <td>
+                {{ form.author }}
+            </td>
+        </tr>
+        <tr>   
+            <td>
+            </td>
+            <td>
+                {{ form.additional_author }}
+            </td>
+        </tr>
         {% for field in form if field.widget.input_type != 'hidden' %}
+        {% if field.id !='additional_author' and field.id !='author' %}
             <tr>   
-            <td>
-            {{ field.label }}
-            </td>
-            <td>
-            {{ field }}
-            </td>
+                <td>
+                    {{ field.label }}
+                </td>
+                <td>
+                    {{ field }}
+                </td>
             </tr>
+        {% endif %}
         {% endfor %}
     </table>
     <input type = "submit", value="Dodaj pozycję"><br>
