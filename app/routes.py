@@ -5,10 +5,9 @@ from app import app
 
 @app.route('/book/')
 def home():
-    authors = Author
-    book_status = Status
+    book_status = Status.query.all()
     books = Books.query.all()
-    return render_template("book.html", books = books, authors = authors, book_status = book_status)
+    return render_template("book.html", books = books, book_status = book_status)
 
 @app.route('/book/add/', methods = ["GET", "POST"])
 def add():
