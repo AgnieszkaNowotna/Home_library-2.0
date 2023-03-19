@@ -27,13 +27,15 @@
                     <p>Recenzja: {{instance.reviev}}</p>
                     <p>Ocena: {{instance.rate}}</p>
                 {% endif %}
-                {% if instance.status_id[0].avaliable == True %}
-                    <p>Dostępność: Na półce</p>
-                {% else %}
-                    <p>Dostępnosć: Wypożyczona</p>
-                    <p>Data wypożyczenia: {{ instance.status_id[0].date_of_hire }}</p>
-                    <p>Data oddania: {{ instance.status_id[0].date_of_handover }}</p>
-                {% endif %}
+                {% with status = instance.status_id[0] %}
+                    {% if status.avaliable == True %}
+                        <p>Dostępność: Na półce</p>
+                    {% else %}
+                        <p>Dostępnosć: Wypożyczona</p>
+                        <p>Data wypożyczenia: {{ status.date_of_hire }}</p>
+                        <p>Data oddania: {{ status.date_of_handover }}</p>
+                    {% endif %}
+                {% endwith %}
             </div>
             </td> 
             <td>

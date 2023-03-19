@@ -1,13 +1,12 @@
 from flask import request, render_template, redirect, url_for, redirect
 from app.forms import BookForm
-from app.models import Books, Author, Status, image_to_string, create_position, update_position, delete_position, create_data_to_update
+from app.models import Books, image_to_string, create_position, update_position, delete_position, create_data_to_update
 from app import app
 
 @app.route('/book/')
 def home():
-    book_status = Status.query.all()
     books = Books.query.all()
-    return render_template("book.html", books = books, book_status = book_status)
+    return render_template("book.html", books = books)
 
 @app.route('/book/add/', methods = ["GET", "POST"])
 def add():
